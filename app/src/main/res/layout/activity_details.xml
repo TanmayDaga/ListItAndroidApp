@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/detailsConstraintLayout"
+        tools:context=".DetailsActivity.DetailsActivity">
+
+
+        <Spinner
+            android:id="@+id/spinnerTable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            style="?android:attr/spinnerDropDownItemStyle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@android:layout/simple_list_item_1"/>
+
+        <EditText
+            android:id="@+id/titleEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@null"
+            app:layout_constraintTop_toBottomOf="@id/spinnerTable"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textStyle="bold"
+            android:hint="@string/enter_title"
+            tools:text="CC Bills"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/titleEditText"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            tools:text="Remember to pay bills"
+            android:background="@null"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:hint="@string/enter_description_here"
+            android:id="@+id/descriptionEditText"/>
+
+
+
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/descriptionEditText"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            tools:listitem="@android:layout/simple_list_item_1"
+            android:id="@+id/prioritySpinnerView"/>
+
+
+        <Button
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/prioritySpinnerView"
+
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:id="@+id/datePickerButton"
+            android:background="@drawable/ic_baseline_date_range_24"
+
+            />
+
+        <TextView
+            android:id="@+id/dateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/datePickerButton"
+            app:layout_constraintTop_toTopOf="@id/datePickerButton"
+            tools:text="2005 , January 16"
+            app:layout_constraintBottom_toBottomOf="@id/datePickerButton"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:layout_marginStart="16dp"
+            android:hint="@string/please_pick_date"
+
+            />
+
+
+
+
+
+        <Button
+            android:id="@+id/submitButton"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+
+            android:background="@drawable/ic_baseline_check_24"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
