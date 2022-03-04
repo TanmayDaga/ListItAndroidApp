@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import com.example.listit.R;
 import com.example.listit.ActivityCompleted.CompletedActivity;
 import com.example.listit.Utilities;
 import com.example.listit.databinding.ActivityMainBinding;
+import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         new TabLayoutMediator(mBinding.tabLayout, mBinding.viewPager,
                 (tab, position) -> tab.setText(mPagerAdapter.getTitle(position))).attach();
 
+        
 //        Floating Action Button
         mBinding.fab.setOnClickListener(
                 view -> startActivity(new Intent(MainActivity.this, DetailsActivity.class)));

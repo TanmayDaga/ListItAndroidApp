@@ -1,5 +1,6 @@
 package com.example.listit.MainActivity;
 
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
@@ -110,6 +112,8 @@ public class ListItFragment extends Fragment {
                 return false;
             }
 
+
+
             // Called when a user swipes left or right on a ViewHolder
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
@@ -127,7 +131,13 @@ public class ListItFragment extends Fragment {
                 });
             }
         }).attachToRecyclerView(mBinding.recyclerView);
+
+
     }
+
+
+
+
 
 
 }
