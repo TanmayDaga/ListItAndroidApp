@@ -29,6 +29,7 @@ public class PagerAdapter extends FragmentStateAdapter {
     }
 
 
+
     @NonNull
     @Override
     public Fragment createFragment(int position) {

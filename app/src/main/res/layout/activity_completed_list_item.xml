@@ -12,7 +12,7 @@
 
 
     <TextView
-        android:id="@+id/uncompletedTitleTextView"
+        android:id="@+id/completedTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
@@ -26,29 +26,29 @@
         tools:text="Do Modules" />
 
     <TextView
-        android:id="@+id/uncompletedDateView"
+        android:id="@+id/completedDateView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="16dp"
 
         android:text="26/12/2022"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/uncompletedDropDownButton"
-        app:layout_constraintTop_toBottomOf="@+id/uncompletedDropDownButton" />
+        app:layout_constraintEnd_toEndOf="@+id/completedDropDownButton"
+        app:layout_constraintTop_toBottomOf="@+id/completedDropDownButton" />
 
     <TextView
-        android:id="@+id/uncompletedDescriptionView"
+        android:id="@+id/completedDescriptionView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="8dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/uncompletedTitleTextView"
-        app:layout_constraintTop_toBottomOf="@+id/uncompletedTitleTextView"
+        app:layout_constraintStart_toStartOf="@+id/completedTitleTextView"
+        app:layout_constraintTop_toBottomOf="@+id/completedTitleTextView"
         tools:text="This is description" />
 
     <Button
-        android:id="@+id/uncompletedDropDownButton"
+        android:id="@+id/completedDropDownButton"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginEnd="16dp"
@@ -59,15 +59,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/descriptionTextView"
+        android:id="@+id/completedDescriptionTextView"
         style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="4dp"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/uncompletedTitleTextView"
-        app:layout_constraintTop_toBottomOf="@+id/uncompletedTitleTextView"
+        app:layout_constraintStart_toStartOf="@+id/completedTitleTextView"
+        app:layout_constraintTop_toBottomOf="@+id/completedTitleTextView"
         tools:hint="This is description" />
 
 

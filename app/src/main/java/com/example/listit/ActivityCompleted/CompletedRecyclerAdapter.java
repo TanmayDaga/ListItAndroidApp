@@ -1,4 +1,4 @@
-package com.example.listit.ActivityUncompleted;
+package com.example.listit.ActivityCompleted;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -20,20 +20,20 @@ import com.example.listit.Utilities;
 import java.util.Date;
 import java.util.List;
 
-public class UncompletedRecyclerAdapter extends RecyclerView.Adapter<UncompletedRecyclerAdapter.ViewHolder> {
+public class CompletedRecyclerAdapter extends RecyclerView.Adapter<CompletedRecyclerAdapter.ViewHolder> {
 
 
     private final Context mContext;
     private List<ListItEntry> mData;
 
-    public UncompletedRecyclerAdapter(Context context) {
+    public CompletedRecyclerAdapter(Context context) {
         this.mContext = context;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.activity_uncompleted_list_item, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.activity_completed_list_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -55,7 +55,7 @@ public class UncompletedRecyclerAdapter extends RecyclerView.Adapter<Uncompleted
         return mData.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView titleTextView;
         public ConstraintLayout constraintLayout;
@@ -66,18 +66,13 @@ public class UncompletedRecyclerAdapter extends RecyclerView.Adapter<Uncompleted
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            titleTextView = itemView.findViewById(R.id.uncompletedTitleTextView);
+            titleTextView = itemView.findViewById(R.id.completedTitleTextView);
             constraintLayout = itemView.findViewById(R.id.uncompletedConstraintLayout);
-            dropDownButton = itemView.findViewById(R.id.uncompletedDropDownButton);
-            descriptionView = itemView.findViewById(R.id.uncompletedDescriptionView);
-            dueDateView = itemView.findViewById(R.id.uncompletedDateView);
+            dropDownButton = itemView.findViewById(R.id.completedDropDownButton);
+            descriptionView = itemView.findViewById(R.id.completedDescriptionView);
+            dueDateView = itemView.findViewById(R.id.completedDateView);
 
-            dropDownButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    toggleDescriptionView();
-                }
-            });
+            dropDownButton.setOnClickListener(view -> toggleDescriptionView());
         }
 
         private void toggleDescriptionView() {

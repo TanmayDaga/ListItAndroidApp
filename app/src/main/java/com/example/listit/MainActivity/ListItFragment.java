@@ -3,12 +3,11 @@ package com.example.listit.MainActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-
 import android.view.View;
 import android.view.ViewGroup;
 
-
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
@@ -21,7 +20,6 @@ import com.example.listit.AppExecutors;
 import com.example.listit.Database.AppDataBase;
 import com.example.listit.Database.ListItEntry;
 import com.example.listit.R;
-import com.example.listit.Utilities;
 import com.example.listit.databinding.FragmentListItBinding;
 
 import java.util.List;
@@ -33,12 +31,14 @@ public class ListItFragment extends Fragment {
     FragmentListItBinding mBinding;
     private AppDataBase mDb;
     private static final String TAG = ListItFragment.class.getSimpleName();
+    LiveData<List<ListItEntry>> mEntries;
 
-
-
+    public ListItFragment() {
+        super();
+    }
 
     public ListItFragment(String category) {
-
+        super();
         CATEGORY = category;
     }
 
@@ -51,29 +51,37 @@ public class ListItFragment extends Fragment {
         initViews();
 
 
+        return mBinding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+
         AppExecutors.getsInstance().diskIo().execute(new Runnable() {
             @Override
             public void run() {
-                LiveData<List<ListItEntry>> entries = mDb.listItDao().loadListItsOfCategoryUnCompleted(CATEGORY);
+                mEntries = mDb.listItDao().loadListItsOfCategoryUnCompleted(CATEGORY);
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        entries.observe(getViewLifecycleOwner(), new Observer<List<ListItEntry>>() {
-                            @Override
-                            public void onChanged(List<ListItEntry> listItEntries) {
-                                mRecyclerAdapter.setData(listItEntries);
-                                Log.d(TAG,String.valueOf(listItEntries.size()));
-                                if( listItEntries.size() == 0){
-                                    mBinding.recyclerView.setVisibility(View.GONE);
-                                    mBinding.emptyView.setVisibility(View.VISIBLE);
-                                }
-                                else {
-                                    mBinding.recyclerView.setVisibility(View.VISIBLE);
-                                    mBinding.emptyView.setVisibility(View.GONE);
-                                }
+                        if (getView() != null) {
+                            mEntries.observe(getViewLifecycleOwner(), new Observer<List<ListItEntry>>() {
+                                @Override
+                                public void onChanged(List<ListItEntry> listItEntries) {
+                                    mRecyclerAdapter.setData(listItEntries);
+                                    Log.d(TAG, String.valueOf(listItEntries.size()));
+                                    if (listItEntries.size() == 0) {
+                                        mBinding.recyclerView.setVisibility(View.GONE);
+                                        mBinding.emptyView.setVisibility(View.VISIBLE);
+                                    } else {
+                                        mBinding.recyclerView.setVisibility(View.VISIBLE);
+                                        mBinding.emptyView.setVisibility(View.GONE);
+                                    }
 
-                            }
-                        });
+                                }
+                            });
+                        }
                     }
                 });
 
@@ -81,11 +89,8 @@ public class ListItFragment extends Fragment {
             }
         });
 
-
-        return mBinding.getRoot();
+        super.onViewCreated(view, savedInstanceState);
     }
-
-
 
     private void initViews() {
         // Inflate the layout for this fragment
@@ -118,13 +123,11 @@ public class ListItFragment extends Fragment {
                         mDb.listItDao().deleteListIt(tasks.get(position));
 
 
-
                     }
                 });
             }
         }).attachToRecyclerView(mBinding.recyclerView);
     }
-
 
 
 }

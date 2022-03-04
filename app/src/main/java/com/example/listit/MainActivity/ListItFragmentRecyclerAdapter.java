@@ -116,10 +116,7 @@ public class ListItFragmentRecyclerAdapter extends RecyclerView.Adapter<ListItFr
 
                     });
 
-                    if (b) {
-                        mListItEntries.remove(getAdapterPosition());
 
-                    }
                 }
             });
 

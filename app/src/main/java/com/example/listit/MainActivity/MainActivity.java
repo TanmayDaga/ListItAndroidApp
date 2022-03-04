@@ -1,6 +1,8 @@
 package com.example.listit.MainActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,14 +16,15 @@ import com.example.listit.AppExecutors;
 import com.example.listit.Database.AppDataBase;
 import com.example.listit.DetailsActivity.DetailsActivity;
 import com.example.listit.R;
-import com.example.listit.ActivityUncompleted.UncompletedActivity;
+import com.example.listit.ActivityCompleted.CompletedActivity;
 import com.example.listit.Utilities;
 import com.example.listit.databinding.ActivityMainBinding;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
 
     private ActivityMainBinding mBinding;
@@ -34,24 +37,23 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
+
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), getLifecycle());
         mDb = AppDataBase.getInstance(this);
 
         initViews();
 
-        AppExecutors.getsInstance().diskIo().execute(() -> {
+        setmPagerAdapterCategories();
 
-            LiveData<List<String>> categories = mDb.listItDao().loadCategoryNames();
 
-            runOnUiThread(() -> categories.observe(MainActivity.this, categories1 -> {
-                Utilities.storeCategoryNames(MainActivity.this, categories1);
 
-                mPagerAdapter.setLists(categories1);
+    }
 
-            }));
-        });
-
+    private void setmPagerAdapterCategories(){
+        List<String> mainList = new ArrayList<String>();
+        mainList.addAll(Utilities.getCategoryNames(this));
+        mPagerAdapter.setLists(mainList);
     }
 
     private void initViews() {
@@ -91,10 +93,30 @@ public class MainActivity extends AppCompatActivity {
             return true;
 
         } else if (itemId == R.id.action_jump_activity_completed) {
-            startActivity(new Intent(this, UncompletedActivity.class));
+            startActivity(new Intent(this, CompletedActivity.class));
             return true;
 
         } else return false;
 
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        getSharedPreferences(Utilities.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE).registerOnSharedPreferenceChangeListener(this);
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getSharedPreferences(Utilities.SHARED_PREFERENCES_KEY,Context.MODE_PRIVATE).registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+            if(s.equals(Utilities.SHARED_PREFERENCES_CATEGORY_NAMES)){
+                setmPagerAdapterCategories();
+            }
     }
 }

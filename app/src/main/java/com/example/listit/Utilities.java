@@ -33,7 +33,8 @@ public class Utilities {
 
 
 
-    private static final String SHARED_PREFERENCES_CATEGORY_NAMES = "categoryNamesString";
+    public static final String SHARED_PREFERENCES_CATEGORY_NAMES = "categoryNamesString";
+    public static final String SHARED_PREFERENCES_KEY = "com.example.listit.sharedpreferences";
 
     public static final int WORK_DONE = 89;
     public static final int WORK_NOT_DONE = 90;
@@ -86,7 +87,7 @@ public class Utilities {
     }
 
     public static void storeCategoryNames(Context context, List<String> listNames) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sp = context.getSharedPreferences(SHARED_PREFERENCES_KEY,Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
 
         if(listNames == null){
@@ -102,7 +103,7 @@ public class Utilities {
     }
 
     public static Set<String> getCategoryNames(Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sp = context.getSharedPreferences(SHARED_PREFERENCES_KEY,Context.MODE_PRIVATE);
 
 
         return sp.getStringSet(SHARED_PREFERENCES_CATEGORY_NAMES, null);
@@ -113,7 +114,7 @@ public class Utilities {
     }
 
     public static void addCategory(Context context, String categoryName) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sp = context.getSharedPreferences(SHARED_PREFERENCES_KEY,Context.MODE_PRIVATE);
         Set<String> set = new HashSet<>(
                 sp.getStringSet(SHARED_PREFERENCES_CATEGORY_NAMES, null)
         );
