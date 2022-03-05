@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         super.onCreate(savedInstanceState);
 
 
+
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), getLifecycle());
         mDb = AppDataBase.getInstance(this);
@@ -59,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     }
 
     private void initViews() {
+
+
 
 //        Pager and Tab Layout
         mBinding.viewPager.setAdapter(mPagerAdapter);

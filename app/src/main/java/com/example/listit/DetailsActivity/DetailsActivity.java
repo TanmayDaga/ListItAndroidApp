@@ -7,6 +7,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -114,7 +115,7 @@ public class DetailsActivity extends AppCompatActivity implements DatePickerDial
 
     private void setData() {
         String title = mBinding.titleEditText.getText().toString();
-        if (title == null) {
+        if (TextUtils.isEmpty(title)) {
             Toast.makeText(this, "Title Cannot be null", Toast.LENGTH_SHORT).show();
             return;
         }

@@ -17,6 +17,8 @@
         <entry key="app/src/main/res/drawable/ic_baseline_date_range_24.xml" value="0.206" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.206" />
         <entry key="app/src/main/res/drawable/layout_bg.xml" value="0.206" />
+        <entry key="app/src/main/res/drawable/list_item_bg_priority_high.xml" value="0.127" />
+        <entry key="app/src/main/res/drawable/list_item_bg_priority_no.xml" value="0.127" />
         <entry key="app/src/main/res/layout/activity_completed_list_item.xml" value="0.12916246215943492" />
         <entry key="app/src/main/res/layout/activity_details.xml" value="0.125" />
         <entry key="app/src/main/res/layout/activity_details_spinner_item.xml" value="0.12916246215943492" />

@@ -3,13 +3,9 @@ package com.example.listit;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
 import java.text.SimpleDateFormat;
@@ -26,10 +22,12 @@ public class Utilities {
     public static final int PRIORITY_HIGH = 3;
     public static final int PRIORITY_MEDIUM = 2;
     public static final int PRIORITY_LOW = 1;
+    public static final int PRIORITY_NO = 0;
 
     public static final String PRIORITY_HIGH_STRING = "Priority High";
     public static final String PRIORITY_MEDIUM_STRING = "Priority Medium";
     public static final String PRIORITY_LOW_STRING = "Priority Low";
+    public static final String PRIORITY_NO_STRING = "No Priority";
 
 
 
@@ -46,28 +44,31 @@ public class Utilities {
     public static Drawable getListItemLayoutBg(Context context, int priority) {
         switch (priority) {
             case PRIORITY_HIGH:
-                return ContextCompat.getDrawable(context, R.drawable.list_item_bg_high);
+                return ContextCompat.getDrawable(context, R.drawable.list_item_bg_priority_high);
             case PRIORITY_MEDIUM:
-                return ContextCompat.getDrawable(context, R.drawable.list_item_bg_medium);
+                return ContextCompat.getDrawable(context, R.drawable.list_item_bg_priority_medium);
+            case PRIORITY_LOW:
+                return ContextCompat.getDrawable(context, R.drawable.list_item_bg_priority_low);
             default:
-                return ContextCompat.getDrawable(context, R.drawable.list_item_bg_low);
+                return ContextCompat.getDrawable(context,R.drawable.list_item_bg_priority_no);
         }
     }
 
     public static int getPriorityFromPosition(int position) {
         switch (position) {
-            case 0:
-                return PRIORITY_HIGH;
+
             case 1:
-                return PRIORITY_MEDIUM;
-            default:
                 return PRIORITY_LOW;
+            case 2:
+                return PRIORITY_MEDIUM;
+            case 3:
+                return PRIORITY_HIGH;
+            default:
+                return PRIORITY_NO;
         }
     }
 
-    public static int getWorkStatusFromCheckBox(@NonNull CheckBox checkBox) {
-        return checkBox.isChecked() ? WORK_DONE : WORK_NOT_DONE;
-    }
+
 
     public static String dateFormatter(int year, int month, int day) {
         return String.format(Locale.getDefault(),"%d/%d/%d", day, month, year);
@@ -111,7 +112,7 @@ public class Utilities {
     }
 
     public static String[] getPriorityList() {
-        return new String[]{PRIORITY_HIGH_STRING, PRIORITY_MEDIUM_STRING, PRIORITY_LOW_STRING};
+        return new String[]{PRIORITY_NO_STRING,PRIORITY_LOW_STRING,PRIORITY_MEDIUM_STRING,PRIORITY_HIGH_STRING};
     }
 
     public static void addCategory(Context context, String categoryName) {
