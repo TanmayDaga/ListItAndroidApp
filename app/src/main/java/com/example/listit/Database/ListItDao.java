@@ -43,7 +43,6 @@ public interface ListItDao {
 
 
 
-
     @Query("DELETE FROM listIt where category = :category")
     void deleteAllByCategory(String category);
 

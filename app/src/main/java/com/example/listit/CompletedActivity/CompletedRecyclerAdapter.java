@@ -1,4 +1,4 @@
-package com.example.listit.ActivityCompleted;
+package com.example.listit.CompletedActivity;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,7 +40,7 @@ public class CompletedRecyclerAdapter extends RecyclerView.Adapter<CompletedRecy
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.constraintLayout.setBackground(Utilities.getListItemLayoutBg(mContext,
+        holder.cardView.setCardBackgroundColor(Utilities.getColorFromPriority(mContext,
                 mData.get(position).getPriority()));
         holder.descriptionView.setText(mData.get(position).getDescription());
         holder.titleTextView.setText(mData.get(position).getTitle());
@@ -58,7 +59,7 @@ public class CompletedRecyclerAdapter extends RecyclerView.Adapter<CompletedRecy
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView titleTextView;
-        public ConstraintLayout constraintLayout;
+        public CardView cardView;
         public Button dropDownButton;
         public TextView descriptionView;
         public TextView dueDateView;
@@ -67,7 +68,7 @@ public class CompletedRecyclerAdapter extends RecyclerView.Adapter<CompletedRecy
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             titleTextView = itemView.findViewById(R.id.completedTitleTextView);
-            constraintLayout = itemView.findViewById(R.id.uncompletedConstraintLayout);
+            cardView = itemView.findViewById(R.id.completedItemCardView);
             dropDownButton = itemView.findViewById(R.id.completedDropDownButton);
             descriptionView = itemView.findViewById(R.id.completedDescriptionView);
             dueDateView = itemView.findViewById(R.id.completedDateView);
@@ -91,5 +92,9 @@ public class CompletedRecyclerAdapter extends RecyclerView.Adapter<CompletedRecy
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(new ListItDiffUtils(mData, listItEntries));
         mData = listItEntries;
         result.dispatchUpdatesTo(this);
+    }
+
+    public List<ListItEntry> getData(){
+        return mData;
     }
 }

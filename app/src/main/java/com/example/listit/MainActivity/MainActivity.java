@@ -6,18 +6,16 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.LiveData;
 
 import com.example.listit.AppExecutors;
 import com.example.listit.Database.AppDataBase;
 import com.example.listit.DetailsActivity.DetailsActivity;
 import com.example.listit.R;
-import com.example.listit.ActivityCompleted.CompletedActivity;
+import com.example.listit.CompletedActivity.CompletedActivity;
 import com.example.listit.Utilities;
 import com.example.listit.databinding.ActivityMainBinding;
 import com.google.android.material.tabs.TabLayout;

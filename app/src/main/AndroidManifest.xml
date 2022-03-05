@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light">
         <activity
-            android:name=".ActivityCompleted.CompletedActivity"
+            android:name=".CompletedActivity.CompletedActivity"
             android:exported="false" />
         <activity
             android:name=".DetailsActivity.DetailsActivity"

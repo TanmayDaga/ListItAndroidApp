@@ -1,74 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/uncompletedConstraintLayout"
+    android:id="@+id/completedItemCardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
     android:layout_marginTop="16dp"
-    android:background="@drawable/list_item_bg_priority_high"
-    android:padding="8dp">
+    android:elevation="12dp"
+    android:padding="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardPreventCornerOverlap="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
 
-    <TextView
-        android:id="@+id/completedTitleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        <TextView
+            android:id="@+id/completedTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textSize="30sp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textSize="30sp"
 
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Do Modules" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Do Modules" />
 
-    <TextView
-        android:id="@+id/completedDateView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="16dp"
+        <TextView
+            android:id="@+id/completedDateView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="16dp"
 
-        android:text="26/12/2022"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/completedDropDownButton"
-        app:layout_constraintTop_toBottomOf="@+id/completedDropDownButton" />
+            android:text="26/12/2022"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/completedDropDownButton"
+            app:layout_constraintTop_toBottomOf="@+id/completedDropDownButton" />
 
-    <TextView
-        android:id="@+id/completedDescriptionView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="8dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/completedTitleTextView"
-        app:layout_constraintTop_toBottomOf="@+id/completedTitleTextView"
-        tools:text="This is description" />
+        <TextView
+            android:id="@+id/completedDescriptionView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/completedTitleTextView"
+            app:layout_constraintTop_toBottomOf="@+id/completedTitleTextView"
+            tools:text="This is description" />
 
-    <Button
-        android:id="@+id/completedDropDownButton"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/ic_baseline_arrow_drop_down_24"
-        android:backgroundTint="@null"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <Button
+            android:id="@+id/completedDropDownButton"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/ic_baseline_arrow_drop_down_24"
+            android:backgroundTint="@null"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/completedDescriptionTextView"
-        style="@style/TextAppearance.AppCompat.Medium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="4dp"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/completedTitleTextView"
-        app:layout_constraintTop_toBottomOf="@+id/completedTitleTextView"
-        tools:hint="This is description" />
+        <TextView
+            android:id="@+id/completedDescriptionTextView"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="4dp"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/completedTitleTextView"
+            app:layout_constraintTop_toBottomOf="@+id/completedTitleTextView"
+            tools:hint="This is description" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -52,7 +52,7 @@ public class ListItFragmentRecyclerAdapter extends RecyclerView.Adapter<ListItFr
     public void onBindViewHolder(@NonNull ListItViewHolder holder, int position) {
 
 
-        holder.listItemConstraintLayout.setBackground(Utilities.getListItemLayoutBg(mContext,
+        holder.listItemCardView.setCardBackgroundColor(Utilities.getColorFromPriority(mContext,
                 mListItEntries.get(position).getPriority()));
 
         holder.descriptionView.setText(mListItEntries.get(position).getDescription());
@@ -78,7 +78,7 @@ public class ListItFragmentRecyclerAdapter extends RecyclerView.Adapter<ListItFr
 
         public TextView listItTitleTextView;
         public CheckBox doneCheckBox;
-        public ConstraintLayout listItemConstraintLayout;
+        public CardView listItemCardView;
         public Button dropDownButton;
         public TextView descriptionView;
         public TextView dueDateView;
@@ -88,7 +88,7 @@ public class ListItFragmentRecyclerAdapter extends RecyclerView.Adapter<ListItFr
             super(itemView);
             listItTitleTextView = itemView.findViewById(R.id.todoTitleTextView);
             doneCheckBox = itemView.findViewById(R.id.todoDoneCheckBox);
-            listItemConstraintLayout = itemView.findViewById(R.id.listItemConstraintLayout);
+            listItemCardView = itemView.findViewById(R.id.listItemCardView);
             dropDownButton = itemView.findViewById(R.id.button);
             descriptionView = itemView.findViewById(R.id.descriptionView);
             dueDateView = itemView.findViewById(R.id.dateView);

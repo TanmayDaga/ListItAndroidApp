@@ -6,7 +6,14 @@ plugins {
     id 'com.android.application' version '7.1.1' apply false
     id 'com.android.library' version '7.1.1' apply false
 }
+allprojects {
+    repositories {
+        google()
+        maven { url 'https://jitpack.io' }
+        mavenCentral()
 
+    }
+}
 
 task clean(type: Delete) {
     delete rootProject.buildDir

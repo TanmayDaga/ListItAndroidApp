@@ -54,6 +54,19 @@ public class Utilities {
         }
     }
 
+    public static int getColorFromPriority(Context context,int priority){
+        switch (priority) {
+            case PRIORITY_HIGH:
+                return ContextCompat.getColor(context, R.color.priority_high);
+            case PRIORITY_MEDIUM:
+                return ContextCompat.getColor(context, R.color.priority_medium);
+            case PRIORITY_LOW:
+                return ContextCompat.getColor(context, R.color.priority_low);
+            default:
+                return ContextCompat.getColor(context,R.color.primaryDarkColor);
+        }
+    }
+
     public static int getPriorityFromPosition(int position) {
         switch (position) {
 
