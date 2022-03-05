@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         new TabLayoutMediator(mBinding.tabLayout, mBinding.viewPager,
                 (tab, position) -> tab.setText(mPagerAdapter.getTitle(position))).attach();
 
+        mBinding.tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
 
 //        Floating Action Button
         mBinding.fab.setOnClickListener(

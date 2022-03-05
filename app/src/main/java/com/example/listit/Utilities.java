@@ -102,11 +102,12 @@ public class Utilities {
 
     }
 
-    public static Set<String> getCategoryNames(Context context) {
+    public static List<String> getCategoryNames(Context context) {
         SharedPreferences sp = context.getSharedPreferences(SHARED_PREFERENCES_KEY,Context.MODE_PRIVATE);
+        List<String> mainList = new ArrayList<String>();
+        mainList.addAll(sp.getStringSet(SHARED_PREFERENCES_CATEGORY_NAMES,null));
 
-
-        return sp.getStringSet(SHARED_PREFERENCES_CATEGORY_NAMES, null);
+        return mainList;
     }
 
     public static String[] getPriorityList() {

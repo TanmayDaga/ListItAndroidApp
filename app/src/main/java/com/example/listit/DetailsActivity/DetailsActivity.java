@@ -4,15 +4,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.example.listit.AppExecutors;
 import com.example.listit.Database.ListItEntry;
+import com.example.listit.MainActivity.AddCategoryDialog;
 import com.example.listit.R;
 import com.example.listit.Utilities;
 import com.example.listit.databinding.ActivityDetailsBinding;
@@ -23,13 +27,14 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-public class DetailsActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class DetailsActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener,
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
     private ActivityDetailsBinding mBinding;
 
     private static final String LOG_TAG = DetailsActivity.class.getSimpleName();
 
-
+    private DetailsSpinnerAdapter mSpinnerTableAdapter;
     public Date mDateSelected;
 
     @Override
@@ -71,9 +76,24 @@ public class DetailsActivity extends AppCompatActivity implements DatePickerDial
 
 
 //        Setting Spinners
-        ArrayAdapter<String> spinnerTableAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item);
-        spinnerTableAdapter.addAll(Utilities.getCategoryNames(this));
-        mBinding.spinnerTable.setAdapter(spinnerTableAdapter);
+        mSpinnerTableAdapter = new DetailsSpinnerAdapter(this, android.R.layout.simple_spinner_dropdown_item,
+                Utilities.getCategoryNames(this));
+        mBinding.spinnerTable.setAdapter(mSpinnerTableAdapter);
+        mBinding.spinnerTable.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                if(mSpinnerTableAdapter.ifButtonPos(position)){
+                    AddCategoryDialog.newInstance().show(getSupportFragmentManager(),"dialog_Alert");
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
 
         ArrayAdapter<String> spinnerPriorityAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item);
@@ -118,5 +138,23 @@ public class DetailsActivity extends AppCompatActivity implements DatePickerDial
 
     }
 
+    @Override
+    protected void onDestroy() {
 
+        getSharedPreferences(Utilities.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE).registerOnSharedPreferenceChangeListener(this);
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getSharedPreferences(Utilities.SHARED_PREFERENCES_KEY,Context.MODE_PRIVATE).registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        if(s.equals(Utilities.SHARED_PREFERENCES_CATEGORY_NAMES)){
+            mSpinnerTableAdapter.setData(Utilities.getCategoryNames(this));
+        }
+    }
 }

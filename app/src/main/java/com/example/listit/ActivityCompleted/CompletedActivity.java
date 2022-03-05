@@ -40,6 +40,7 @@ public class CompletedActivity extends AppCompatActivity {
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mBinding.recyclerView.setAdapter(mRecyclerAdapter);
 
+        getSupportActionBar().setTitle(R.string.completed_taks);
         AppExecutors.getsInstance().diskIo().execute(new Runnable() {
             @Override
             public void run() {

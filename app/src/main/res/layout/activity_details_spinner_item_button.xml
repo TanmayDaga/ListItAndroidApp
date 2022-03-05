@@ -2,24 +2,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="horizontal"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp">
+
+
+
+    <TextView
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_category"
+
+        style="?attr/spinnerDropDownItemStyle"
+        android:layout_gravity="center_vertical"
+        />
 
     <ImageView
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_add_24"
-        android:layout_margin="4dp"
-        />
-
-    <TextView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/add_category"
-        android:textSize="32sp"
         android:layout_gravity="center_vertical"
-        />
 
+
+        android:src="@drawable/ic_baseline_add_24" />
 
 </LinearLayout>
