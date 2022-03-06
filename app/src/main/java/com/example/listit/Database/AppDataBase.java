@@ -12,7 +12,7 @@ import androidx.room.TypeConverters;
 
 
 
-@Database(entities = {ListItEntry.class}, version = 1, exportSchema = false)
+@Database(entities = {ListItEntry.class,CategoryEntry.class}, version = 1, exportSchema = false)
 @TypeConverters(DateConverter.class)
 public abstract class AppDataBase extends RoomDatabase {
 
@@ -41,6 +41,7 @@ public abstract class AppDataBase extends RoomDatabase {
         return sInstance;
     }
     public abstract ListItDao listItDao();
+    public abstract CategoryDao categoryDao();
 
 
 }

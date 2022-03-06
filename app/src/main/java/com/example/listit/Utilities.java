@@ -13,6 +13,10 @@ import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
+import com.example.listit.Database.AppDataBase;
+import com.example.listit.Database.CategoryDao;
+import com.example.listit.Database.CategoryEntry;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,8 +39,7 @@ public class Utilities {
     public static final String PRIORITY_NO_STRING = "No Priority";
 
 
-    public static final String SHARED_PREFERENCES_CATEGORY_NAMES = "categoryNamesString";
-    public static final String SHARED_PREFERENCES_KEY = "com.example.listit.sharedpreferences";
+
 
     public static final int WORK_DONE = 89;
     public static final int WORK_NOT_DONE = 90;
@@ -89,44 +92,26 @@ public class Utilities {
         return new Date(c.getTimeInMillis());
     }
 
-    public static void storeCategoryNames(Context context, List<String> listNames) {
-        SharedPreferences sp = context.getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
 
-        if (listNames == null) {
-            listNames = new ArrayList<>();
-        }
-        if (listNames.size() == 0) {
-            listNames.add(DEFAULT_CATEGORY_NAME);
-        }
-        Set<String> set = new HashSet<>(listNames);
-        editor.putStringSet(SHARED_PREFERENCES_CATEGORY_NAMES, set);
-        editor.apply();
 
-    }
-
-    public static List<String> getCategoryNames(Context context) {
-        SharedPreferences sp = context.getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
-        List<String> mainList = new ArrayList<String>();
-        mainList.addAll(sp.getStringSet(SHARED_PREFERENCES_CATEGORY_NAMES, null));
-
-        return mainList;
-    }
 
     public static String[] getPriorityList() {
         return new String[]{PRIORITY_NO_STRING, PRIORITY_LOW_STRING, PRIORITY_MEDIUM_STRING, PRIORITY_HIGH_STRING};
     }
 
     public static void addCategory(Context context, String categoryName) {
-        SharedPreferences sp = context.getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
-        Set<String> set = new HashSet<>(
-                sp.getStringSet(SHARED_PREFERENCES_CATEGORY_NAMES, null)
-        );
+        AppExecutors.getsInstance().diskIo().execute(new Runnable() {
+            @Override
+            public void run() {
+                int order = AppDataBase.getInstance().categoryDao().getLastColumnOrder();
+                AppDataBase.getInstance().categoryDao().insertCategory(
+                        new CategoryEntry(categoryName,order+1)
+                );
 
-        set.add(categoryName);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putStringSet(SHARED_PREFERENCES_CATEGORY_NAMES, set);
-        editor.apply();
+            }
+        });
+        Toast.makeText(context,"Added scussefully",Toast.LENGTH_LONG).show();
+
 
 
     }
@@ -161,7 +146,12 @@ public class Utilities {
                             return;
                         }
 
-                        addCategory(mContext, name);
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                addCategory(mContext,name);
+                            }
+                        });
                         dialog.dismiss();
                     }
                 });

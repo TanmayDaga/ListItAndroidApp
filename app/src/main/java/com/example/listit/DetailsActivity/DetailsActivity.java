@@ -2,6 +2,8 @@ package com.example.listit.DetailsActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -23,12 +25,13 @@ import com.example.listit.databinding.ActivityDetailsBinding;
 import com.example.listit.Database.AppDataBase;
 
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 
-public class DetailsActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener,
-        SharedPreferences.OnSharedPreferenceChangeListener {
+public class DetailsActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
     private ActivityDetailsBinding mBinding;
 
@@ -46,9 +49,29 @@ public class DetailsActivity extends AppCompatActivity implements DatePickerDial
 
         setValuesAndListeners();
 
-
+        setSpinnerData();
     }
 
+    private void setSpinnerData(){
+        AppExecutors.getsInstance().diskIo().execute(new Runnable() {
+            @Override
+            public void run() {
+                LiveData<List<String>> categoryEntryLiveData= AppDataBase.getInstance().categoryDao().loadCategories();
+                DetailsActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        categoryEntryLiveData.observe(DetailsActivity.this, new Observer<List<String>>() {
+                            @Override
+                            public void onChanged(List<String> stringList) {
+                                mSpinnerTableAdapter.setData(stringList);
+                            }
+                        });
+                    }
+                });
+
+            }
+        });
+    }
 
     private void setValuesAndListeners() {
 
@@ -75,9 +98,10 @@ public class DetailsActivity extends AppCompatActivity implements DatePickerDial
         });
 
 
+
 //        Setting Spinners
         mSpinnerTableAdapter = new DetailsSpinnerAdapter(this, android.R.layout.simple_spinner_dropdown_item,
-                Utilities.getCategoryNames(this));
+                new ArrayList<>(){});
         mBinding.spinnerTable.setAdapter(mSpinnerTableAdapter);
         mBinding.spinnerTable.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -138,23 +162,5 @@ public class DetailsActivity extends AppCompatActivity implements DatePickerDial
 
     }
 
-    @Override
-    protected void onDestroy() {
 
-        getSharedPreferences(Utilities.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE).registerOnSharedPreferenceChangeListener(this);
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        getSharedPreferences(Utilities.SHARED_PREFERENCES_KEY,Context.MODE_PRIVATE).registerOnSharedPreferenceChangeListener(this);
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        if(s.equals(Utilities.SHARED_PREFERENCES_CATEGORY_NAMES)){
-            mSpinnerTableAdapter.setData(Utilities.getCategoryNames(this));
-        }
-    }
 }

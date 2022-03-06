@@ -2,11 +2,19 @@ package com.example.listit.Database;
 
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
-@Entity(tableName = "listIt")
+@Entity(tableName = "listIt",indices =
+        {@Index("category")},foreignKeys = {
+        @ForeignKey(entity = CategoryEntry.class,
+                             parentColumns = "name",
+                             childColumns = "category",
+                             onDelete = ForeignKey.CASCADE)
+})
 public class ListItEntry {
 
 
@@ -15,8 +23,6 @@ public class ListItEntry {
     private String title;
     private String description;
     private Date dueDate;
-
-
     private String category;
     private int priority;
     private boolean completed;

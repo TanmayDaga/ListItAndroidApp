@@ -10,9 +10,12 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 
 import com.example.listit.AppExecutors;
 import com.example.listit.Database.AppDataBase;
+import com.example.listit.Database.CategoryEntry;
 import com.example.listit.DetailsActivity.DetailsActivity;
 import com.example.listit.R;
 import com.example.listit.CompletedActivity.CompletedActivity;
@@ -24,7 +27,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity extends AppCompatActivity{
 
 
     private ActivityMainBinding mBinding;
@@ -52,9 +55,30 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     }
 
     private void setmPagerAdapterCategories(){
-        List<String> mainList = new ArrayList<String>();
-        mainList.addAll(Utilities.getCategoryNames(this));
-        mPagerAdapter.setLists(mainList);
+        AppExecutors.getsInstance().diskIo().execute(new Runnable() {
+            @Override
+            public void run() {
+                LiveData<List<String>> categoryEntryLiveData= AppDataBase.getInstance().categoryDao().loadCategories();
+
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        categoryEntryLiveData.observe(MainActivity.this, new Observer<List<String>>() {
+                            @Override
+                            public void onChanged(List<String> stringList) {
+                                if(stringList == null || stringList.size() == 0){
+                                    stringList = new ArrayList<>();
+                                    stringList.add("My Tasks");
+                                }
+                                mPagerAdapter.setLists(stringList);
+                            }
+                        });
+                    }
+                });
+
+            }
+        });
+
     }
 
     private void initViews() {
@@ -104,23 +128,4 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     }
 
-    @Override
-    protected void onDestroy() {
-
-        getSharedPreferences(Utilities.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE).registerOnSharedPreferenceChangeListener(this);
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        getSharedPreferences(Utilities.SHARED_PREFERENCES_KEY,Context.MODE_PRIVATE).registerOnSharedPreferenceChangeListener(this);
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-            if(s.equals(Utilities.SHARED_PREFERENCES_CATEGORY_NAMES)){
-                setmPagerAdapterCategories();
-            }
-    }
 }
