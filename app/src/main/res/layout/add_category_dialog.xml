@@ -1,18 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/categoryDialogParentLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:background="@drawable/category_dialog_inset"
+    android:orientation="vertical"
+    style="?materialAlertDialogTheme">
 
+    <TextView
+        android:id="@+id/categoryDialogTileTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:elevation="4dp"
+        android:layout_marginVertical="4dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:text="@string/save_category"/>
     <EditText
-        android:layout_marginHorizontal="8dp"
         android:id="@+id/addCategoryEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
         android:layout_marginVertical="8dp"
-        android:hint="@string/category_edit_text_hint" />
+        android:hint="@string/category_edit_text_hint"
+         />
 
 
+    <LinearLayout
+        android:layout_marginVertical="8dp"
+        android:layout_marginHorizontal="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/categoryDialogButtonCancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            style="?materialButtonOutlinedStyle"
+            android:text="@string/cancel" />
+
+
+        <Button
+            android:id="@+id/categoryDialogButtonOk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            style="?materialButtonOutlinedStyle"
+            android:text="@string/ok" />
+
+    </LinearLayout>
 
 
 </LinearLayout>

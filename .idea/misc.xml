@@ -10,6 +10,9 @@
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.206" />
         <entry key="app/src/main/res/drawable-v24/list_item_bg_low.xml" value="0.206" />
         <entry key="app/src/main/res/drawable-v24/list_item_bg_medium.xml" value="0.206" />
+        <entry key="app/src/main/res/drawable/category_dialog_background.xml" value="0.1275" />
+        <entry key="app/src/main/res/drawable/category_dialog_bg.xml" value="0.1275" />
+        <entry key="app/src/main/res/drawable/category_dialog_inset.xml" value="0.206" />
         <entry key="app/src/main/res/drawable/check_box_background.xml" value="0.206" />
         <entry key="app/src/main/res/drawable/default_dot.xml" value="0.206" />
         <entry key="app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.206" />
@@ -28,7 +31,8 @@
         <entry key="app/src/main/res/layout/activity_uncompleted.xml" value="0.12916246215943492" />
         <entry key="app/src/main/res/layout/activity_uncompleted_list_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/add_category.xml" value="0.13723511604439959" />
-        <entry key="app/src/main/res/layout/add_category_dialog.xml" value="0.12916666666666668" />
+        <entry key="app/src/main/res/layout/add_category_dialog.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/category_dialog_bg.xml" value="0.1125" />
         <entry key="app/src/main/res/layout/fragment_list_it.xml" value="0.1301715438950555" />
         <entry key="app/src/main/res/layout/list_it_recyclerview_item.xml" value="0.23465637207031248" />
         <entry key="app/src/main/res/menu/activity_main_menu.xml" value="0.275" />

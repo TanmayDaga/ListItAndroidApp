@@ -93,8 +93,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             return true;
 
         } else if (itemId == R.id.action_add_category) {
-            AddCategoryDialog dialog = AddCategoryDialog.newInstance();
-            dialog.show(getSupportFragmentManager(), "dialog_alert");
+            Utilities.showCategoryDialog(this,this);
             return true;
 
         } else if (itemId == R.id.action_jump_activity_completed) {

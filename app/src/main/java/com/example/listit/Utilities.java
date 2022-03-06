@@ -1,11 +1,16 @@
 package com.example.listit;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
-import android.widget.CheckBox;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import java.text.SimpleDateFormat;
@@ -30,7 +35,6 @@ public class Utilities {
     public static final String PRIORITY_NO_STRING = "No Priority";
 
 
-
     public static final String SHARED_PREFERENCES_CATEGORY_NAMES = "categoryNamesString";
     public static final String SHARED_PREFERENCES_KEY = "com.example.listit.sharedpreferences";
 
@@ -40,21 +44,7 @@ public class Utilities {
     public static final String DEFAULT_CATEGORY_NAME = "My Tasks";
 
 
-
-    public static Drawable getListItemLayoutBg(Context context, int priority) {
-        switch (priority) {
-            case PRIORITY_HIGH:
-                return ContextCompat.getDrawable(context, R.drawable.list_item_bg_priority_high);
-            case PRIORITY_MEDIUM:
-                return ContextCompat.getDrawable(context, R.drawable.list_item_bg_priority_medium);
-            case PRIORITY_LOW:
-                return ContextCompat.getDrawable(context, R.drawable.list_item_bg_priority_low);
-            default:
-                return ContextCompat.getDrawable(context,R.drawable.list_item_bg_priority_no);
-        }
-    }
-
-    public static int getColorFromPriority(Context context,int priority){
+    public static int getColorFromPriority(Context context, int priority) {
         switch (priority) {
             case PRIORITY_HIGH:
                 return ContextCompat.getColor(context, R.color.priority_high);
@@ -63,7 +53,7 @@ public class Utilities {
             case PRIORITY_LOW:
                 return ContextCompat.getColor(context, R.color.priority_low);
             default:
-                return ContextCompat.getColor(context,R.color.primaryDarkColor);
+                return ContextCompat.getColor(context, R.color.primaryDarkColor);
         }
     }
 
@@ -82,29 +72,28 @@ public class Utilities {
     }
 
 
-
     public static String dateFormatter(int year, int month, int day) {
-        return String.format(Locale.getDefault(),"%d/%d/%d", day, month, year);
+        return String.format(Locale.getDefault(), "%d/%d/%d", day, month, year);
     }
-    public static  String dateFormatter(Date date){
-        if(!(date == null)){
+
+    public static String dateFormatter(Date date) {
+        if (!(date == null)) {
             return new SimpleDateFormat("dd/MM/yyyy").format(date);
-        }
-        else return "Congrats \uD83D\uDE03 no due date";
+        } else return "Congrats \uD83D\uDE03 no due date";
     }
 
     public static Date intToDate(int year, int month, int day) {
         Calendar c = Calendar.getInstance();
-        c.set(year,month-1,day);
+        c.set(year, month - 1, day);
 
         return new Date(c.getTimeInMillis());
     }
 
     public static void storeCategoryNames(Context context, List<String> listNames) {
-        SharedPreferences sp = context.getSharedPreferences(SHARED_PREFERENCES_KEY,Context.MODE_PRIVATE);
+        SharedPreferences sp = context.getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
 
-        if(listNames == null){
+        if (listNames == null) {
             listNames = new ArrayList<>();
         }
         if (listNames.size() == 0) {
@@ -117,19 +106,19 @@ public class Utilities {
     }
 
     public static List<String> getCategoryNames(Context context) {
-        SharedPreferences sp = context.getSharedPreferences(SHARED_PREFERENCES_KEY,Context.MODE_PRIVATE);
+        SharedPreferences sp = context.getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
         List<String> mainList = new ArrayList<String>();
-        mainList.addAll(sp.getStringSet(SHARED_PREFERENCES_CATEGORY_NAMES,null));
+        mainList.addAll(sp.getStringSet(SHARED_PREFERENCES_CATEGORY_NAMES, null));
 
         return mainList;
     }
 
     public static String[] getPriorityList() {
-        return new String[]{PRIORITY_NO_STRING,PRIORITY_LOW_STRING,PRIORITY_MEDIUM_STRING,PRIORITY_HIGH_STRING};
+        return new String[]{PRIORITY_NO_STRING, PRIORITY_LOW_STRING, PRIORITY_MEDIUM_STRING, PRIORITY_HIGH_STRING};
     }
 
     public static void addCategory(Context context, String categoryName) {
-        SharedPreferences sp = context.getSharedPreferences(SHARED_PREFERENCES_KEY,Context.MODE_PRIVATE);
+        SharedPreferences sp = context.getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
         Set<String> set = new HashSet<>(
                 sp.getStringSet(SHARED_PREFERENCES_CATEGORY_NAMES, null)
         );
@@ -140,6 +129,52 @@ public class Utilities {
         editor.apply();
 
 
+    }
+
+    public static void showCategoryDialog(Activity activity, Context mContext) {
+        getCategoryDialog(activity,mContext).show();
+    }
+
+    private static Dialog getCategoryDialog(Activity activity, Context mContext) {
+        Dialog dialog = new Dialog(mContext, R.style.Dialog);
+        dialog.setContentView(R.layout.add_category_dialog);
+        dialog.setCancelable(true);
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+
+        ((Button) dialog.findViewById(R.id.categoryDialogButtonOk)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AppExecutors.getsInstance().diskIo().execute(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        String name = ((TextView) dialog.findViewById(R.id.addCategoryEditText)).getText().toString();
+                        if (TextUtils.isEmpty(name)) {
+                            activity
+                                    .runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(mContext, "Empty category cannot be added", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+
+                            return;
+                        }
+
+                        addCategory(mContext, name);
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
+
+        ((Button) dialog.findViewById(R.id.categoryDialogButtonCancel)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        return dialog;
     }
 
 

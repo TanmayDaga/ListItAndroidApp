@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import com.example.listit.AppExecutors;
 import com.example.listit.Database.ListItEntry;
-import com.example.listit.MainActivity.AddCategoryDialog;
 import com.example.listit.R;
 import com.example.listit.Utilities;
 import com.example.listit.databinding.ActivityDetailsBinding;
@@ -85,7 +84,7 @@ public class DetailsActivity extends AppCompatActivity implements DatePickerDial
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 if(mSpinnerTableAdapter.ifButtonPos(position)){
-                    AddCategoryDialog.newInstance().show(getSupportFragmentManager(),"dialog_Alert");
+                    Utilities.showCategoryDialog(DetailsActivity.this,DetailsActivity.this);
                 }
 
             }
