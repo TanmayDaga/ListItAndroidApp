@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity{
         AppExecutors.getsInstance().diskIo().execute(new Runnable() {
             @Override
             public void run() {
-                LiveData<List<String>> categoryEntryLiveData= AppDataBase.getInstance().categoryDao().loadCategories();
+                LiveData<List<String>> categoryEntryLiveData= AppDataBase.getInstance().categoryDao().loadCategoriesName();
 
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override

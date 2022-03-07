@@ -13,7 +13,10 @@ import java.util.List;
 public interface CategoryDao {
 
     @Query("SELECT name FROM category ORDER BY `order` ASC")
-    LiveData<List<String>> loadCategories();
+    LiveData<List<String>> loadCategoriesName();
+
+    @Query("SELECT * FROM category ORDER BY `order` ASC")
+    LiveData<List<CategoryEntry>> loadCategories();
 
     @Insert
     void insertCategory(CategoryEntry categoryEntry);
