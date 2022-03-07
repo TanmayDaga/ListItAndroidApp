@@ -45,6 +45,6 @@ public class DetailsViewModel extends AndroidViewModel {
         });
 
 
-        Log.d("lkdsa","INserted Successfully");
+
     }
 }

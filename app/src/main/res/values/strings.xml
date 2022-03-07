@@ -26,4 +26,6 @@
     <string name="completed_tasks">Completed Tasks</string>
     <string name="completed_taks">Completed Tasks</string>
     <string name="save_category">Save Category</string>
+
+    <string name="category_my_tasks">My Tasks</string>
 </resources>

@@ -39,6 +39,9 @@ public class Utilities {
     public static final String PRIORITY_NO_STRING = "No Priority";
 
 
+    public static final String SHARED_PREFERENCES_LIST_IT =  "listItPreferences";
+    public static final String SHARED_PREFERENCES_FIRST_TIME_OPEN_KEY = "firstTime";
+
 
 
     public static final int WORK_DONE = 89;
@@ -165,6 +168,22 @@ public class Utilities {
             }
         });
         return dialog;
+    }
+
+    public static boolean isFirstTime(Context context){
+        SharedPreferences sp = context.getSharedPreferences(SHARED_PREFERENCES_LIST_IT,Context.MODE_PRIVATE);
+        boolean firstTime = sp.getBoolean(SHARED_PREFERENCES_FIRST_TIME_OPEN_KEY,true);
+
+
+//        First Time Opened
+        if(firstTime){
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putBoolean(SHARED_PREFERENCES_FIRST_TIME_OPEN_KEY,false);
+            editor.apply();
+        }
+        return firstTime;
+
+
     }
 
 

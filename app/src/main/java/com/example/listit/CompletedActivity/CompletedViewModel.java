@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.example.listit.AppExecutors;
 import com.example.listit.Database.AppDataBase;
 import com.example.listit.Database.ListItEntry;
 
@@ -27,10 +28,22 @@ public class CompletedViewModel extends AndroidViewModel {
     }
 
     public void deleteListIts(ListItEntry listItEntry) {
-        mDb.listItDao().deleteListIt(listItEntry);
+        AppExecutors.getsInstance().diskIo().execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.listItDao().deleteListIt(listItEntry);
+            }
+        });
+
     }
 
     public void setUnCompleted(int id) {
-        mDb.listItDao().setCompletedById(false, id);
+        AppExecutors.getsInstance().diskIo().execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.listItDao().setCompletedById(false, id);
+            }
+        });
+
     }
 }

@@ -15,6 +15,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,6 +38,7 @@ public class ListItFragment extends Fragment {
     private AppDataBase mDb;
     private static final String TAG = ListItFragment.class.getSimpleName();
     LiveData<List<ListItEntry>> mEntries;
+    MainActivityViewModel mViewModel;
 
     public ListItFragment() {
         super();
@@ -53,9 +55,9 @@ public class ListItFragment extends Fragment {
 
         mDb = AppDataBase.getInstance(getContext());
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_list_it, container, false);
+        mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+
         initViews();
-
-
         return mBinding.getRoot();
     }
 
@@ -63,36 +65,23 @@ public class ListItFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
 
-        AppExecutors.getsInstance().diskIo().execute(new Runnable() {
+        mEntries = mViewModel.getFragmentData(CATEGORY);
+
+        mEntries.observe(getViewLifecycleOwner(), new Observer<List<ListItEntry>>() {
             @Override
-            public void run() {
-                mEntries = mDb.listItDao().loadListItsOfCategoryUnCompleted(CATEGORY);
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (getView() != null) {
-                            mEntries.observe(getViewLifecycleOwner(), new Observer<List<ListItEntry>>() {
-                                @Override
-                                public void onChanged(List<ListItEntry> listItEntries) {
-                                    mRecyclerAdapter.setData(listItEntries);
-                                    Log.d(TAG, String.valueOf(listItEntries.size()));
-                                    if (listItEntries.size() == 0) {
-                                        mBinding.recyclerView.setVisibility(View.GONE);
-                                        mBinding.emptyView.setVisibility(View.VISIBLE);
-                                    } else {
-                                        mBinding.recyclerView.setVisibility(View.VISIBLE);
-                                        mBinding.emptyView.setVisibility(View.GONE);
-                                    }
-
-                                }
-                            });
-                        }
-                    }
-                });
-
-
+            public void onChanged(List<ListItEntry> entries) {
+                mRecyclerAdapter.setData(entries);
+                Log.d(TAG, String.valueOf(entries.size()));
+                if (entries.size() == 0) {
+                    mBinding.recyclerView.setVisibility(View.GONE);
+                    mBinding.emptyView.setVisibility(View.VISIBLE);
+                } else {
+                    mBinding.recyclerView.setVisibility(View.VISIBLE);
+                    mBinding.emptyView.setVisibility(View.GONE);
+                }
             }
         });
+
 
         super.onViewCreated(view, savedInstanceState);
     }
@@ -116,35 +105,28 @@ public class ListItFragment extends Fragment {
             }
 
 
-
-
-
             // Called when a user swipes left or right on a ViewHolder
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
 
 
-                AppExecutors.getsInstance().diskIo().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        int position = viewHolder.getAdapterPosition();
-                        List<ListItEntry> tasks = mRecyclerAdapter.getTasks();
-                        switch (swipeDir) {
-                            case ItemTouchHelper.LEFT:
+                int position = viewHolder.getAdapterPosition();
+                List<ListItEntry> tasks = mRecyclerAdapter.getTasks();
+                switch (swipeDir){
+                    case ItemTouchHelper.LEFT:
+                        mViewModel.deleteListIts(tasks.get(position));
+                        break;
+                    case ItemTouchHelper.RIGHT:
+                        mViewModel.setCompleted(tasks.get(position).getId());
+                }
 
-                                mDb.listItDao().deleteListIt(tasks.get(position));
-                            case ItemTouchHelper.RIGHT:
-                                mDb.listItDao().setCompletedById(true,tasks.get(position).getId());
-                        }
 
-                    }
-                });
             }
 
             @Override
             public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
 
-                
+
                 new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
 
                         .addSwipeLeftActionIcon(R.drawable.ic_baseline_delete_24)
@@ -152,9 +134,9 @@ public class ListItFragment extends Fragment {
                         .addSwipeLeftLabel("delete")
                         .setSwipeLeftLabelColor(ContextCompat.getColor(getContext(), android.R.color.white))
                         .setSwipeLeftActionIconTint(ContextCompat.getColor(getContext(), android.R.color.white))
-                        .addCornerRadius(TypedValue.COMPLEX_UNIT_DIP,12)
+                        .addCornerRadius(TypedValue.COMPLEX_UNIT_DIP, 12)
                         .addSwipeRightActionIcon(R.drawable.ic_baseline_done_24)
-                        .addSwipeRightBackgroundColor(ContextCompat.getColor(getContext(),R.color.cyan_200))
+                        .addSwipeRightBackgroundColor(ContextCompat.getColor(getContext(), R.color.cyan_200))
                         .addSwipeRightLabel("Completed")
                         .setSwipeRightLabelColor(ContextCompat.getColor(getContext(), android.R.color.black))
                         .setSwipeRightActionIconTint(ContextCompat.getColor(getContext(), android.R.color.black))
@@ -166,10 +148,6 @@ public class ListItFragment extends Fragment {
 
 
     }
-
-
-
-
 
 
 }

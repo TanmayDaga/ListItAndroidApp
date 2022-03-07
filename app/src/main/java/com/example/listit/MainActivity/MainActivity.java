@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.example.listit.AppExecutors;
 import com.example.listit.Database.AppDataBase;
@@ -32,7 +33,8 @@ public class MainActivity extends AppCompatActivity{
 
     private ActivityMainBinding mBinding;
     private PagerAdapter mPagerAdapter;
-    private AppDataBase mDb;
+
+    private MainActivityViewModel mViewModel;
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     @Override
@@ -44,7 +46,14 @@ public class MainActivity extends AppCompatActivity{
 
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), getLifecycle());
-        mDb = AppDataBase.getInstance(this);
+        mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+
+
+//        If app opened for first time
+        if(Utilities.isFirstTime(this)){
+            mViewModel.AddMyTasks();
+
+        }
 
         initViews();
 
@@ -55,29 +64,18 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void setmPagerAdapterCategories(){
-        AppExecutors.getsInstance().diskIo().execute(new Runnable() {
-            @Override
-            public void run() {
-                LiveData<List<String>> categoryEntryLiveData= AppDataBase.getInstance().categoryDao().loadCategoriesName();
+            AppExecutors.getsInstance().diskIo().execute(new Runnable() {
+                @Override
+                public void run() {
+                    mViewModel.getCategories().observe(MainActivity.this, new Observer<List<String>>() {
+                        @Override
+                        public void onChanged(List<String> stringList) {
+                            mPagerAdapter.setLists(stringList);
+                        }
+                    });
+                }
+            });
 
-                MainActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        categoryEntryLiveData.observe(MainActivity.this, new Observer<List<String>>() {
-                            @Override
-                            public void onChanged(List<String> stringList) {
-                                if(stringList == null || stringList.size() == 0){
-                                    stringList = new ArrayList<>();
-                                    stringList.add("My Tasks");
-                                }
-                                mPagerAdapter.setLists(stringList);
-                            }
-                        });
-                    }
-                });
-
-            }
-        });
 
     }
 
@@ -109,15 +107,14 @@ public class MainActivity extends AppCompatActivity{
         int itemId = item.getItemId();
 
         if (itemId == R.id.action_delete_all) {
-            AppExecutors.getsInstance().diskIo().execute(() -> mDb.listItDao().deleteAllByCategory(
-                    mPagerAdapter.getCategoryByPosition(
-                            mBinding.tabLayout.getSelectedTabPosition()
-                    )
+            mViewModel.deleteAllByCategory(mPagerAdapter.getCategoryByPosition(
+                    mBinding.tabLayout.getSelectedTabPosition()
             ));
             return true;
 
+
         } else if (itemId == R.id.action_add_category) {
-            Utilities.showCategoryDialog(this,this);
+            Utilities.showCategoryDialog(this, this);
             return true;
 
         } else if (itemId == R.id.action_jump_activity_completed) {
